@@ -1,6 +1,6 @@
 # which fields get saved
 fieldsAll <- c("user", "guess","slide")
-
+token <- readRDS("droptoken.rds")
 # self-explanatory
 responsesDir <- file.path("responses")
 
@@ -81,7 +81,7 @@ saveData <- function(data) {
   
   write.csv(data, filePath, row.names = FALSE, quote = TRUE)
   # Upload the file to Dropbox
-  drop_upload(filePath, dest = responsesDir)
+  drop_upload(filePath, dest = responsesDir, dtoken= token)
 }
 
 
