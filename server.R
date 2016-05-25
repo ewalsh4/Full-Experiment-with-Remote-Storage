@@ -43,10 +43,11 @@ shinyServer(
       
       # Check whether user name is correct
       # Fix me: test against a session-specific password here, not username
+      user_name <- nchar(input$user) > 0
       user_ok <- input$password==session_password
       
       # If credentials are valid push user into experiment
-      if(user_ok){
+      if(user_ok && user_name){
         shinyjs::hide("login_page")
         shinyjs::show("instructions")
         

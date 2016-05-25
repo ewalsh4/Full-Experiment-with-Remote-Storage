@@ -3,6 +3,8 @@ library(shinyjs)
 source('helpers.R')
 shinyUI(fluidPage(
   
+  
+## this is the section that gets rid of the extra elements in the slider such as the number counter over the top,
   tags$head(tags$style(HTML('.irs-from, .irs-to, .irs-min, .irs-max, .irs-single {visibility: hidden !important;
                             }'))),
   useShinyjs(),
@@ -14,7 +16,7 @@ shinyUI(fluidPage(
       
       sidebarPanel(
         h2("Login"),
-        p("Welcome to today's experiment. Please use the user name provided on the instructions to login into the experiment."),
+        p("Welcome to today's experiment. Please enter the username and password that were provided in the qualtrics survey."),
         hidden(
           div(
             id = "login_error",
