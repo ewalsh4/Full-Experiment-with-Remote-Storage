@@ -94,8 +94,9 @@ shinyUI(fluidPage(
         ),
         
         mainPanel(
-          h4("Overview over your choices"),
-          dataTableOutput(outputId="results")
+          h4("Please return to the Qualtrics Survey and enter the code below: "),
+          br(),
+          h3("kj5jv39c", align= "center")
         )
       )
     )
