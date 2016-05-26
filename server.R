@@ -74,7 +74,7 @@ shinyServer(
     ##########################################################
     ########### PART III: MAIN EXPERIMENT ####################
     ##########################################################
-    
+   
     ## Initialize reactive values
     # round is an iterator that counts how often 'submit' as been clicked.
     values <- reactiveValues(round = 1)
@@ -97,10 +97,12 @@ shinyServer(
     ## This is the main experiment handler
     # Observe the submit button, if clicked... FIRE
     
-    
-    
     observeEvent(input$submit, {
-      
+    if(input$slide==1){
+      shinyjs::show("slide_error")
+    }
+   else {
+     shinyjs::hide("slide_error")
       # Increment the round by one
       isolate({
         values$round <- values$round +1
@@ -130,6 +132,7 @@ shinyServer(
         hide(id = "form")
         show(id = "end")
       }
+   }
     })
     
     ## Utilities & functions

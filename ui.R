@@ -40,6 +40,16 @@ shinyUI(fluidPage(
          actionButton("confirm", label = "Ok, I got it... let's start")
     )
   ),
+  hidden(
+    div(
+      id = "slide_error",
+      span("Please use the slider to answer the question.", style = "color:red")
+    )
+  ),
+
+  
+  
+  
   
   hidden(
     div(
