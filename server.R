@@ -21,10 +21,13 @@ z   <- runif(500,0,1)
 theta <- runif(500,0,360)
 ycoor <- y * cos(theta)
 zcoor <- z * sin(theta)
+colorR   <- seq(0, 1, length.out = 500) ###new shit
+
+stim <- as.data.frame(seq(0.1, 1, length.out =10))
 
 ##origin, diameter and points
 cir <- circleFun(c(0,0),2,npoints = 500)
-test <- cbind.data.frame(x, y, z,ycoor,zcoor, theta, cir)
+test <- cbind.data.frame(x, y, z,ycoor,zcoor, theta, cir, colorR)
 
 ###############################################################
 
@@ -159,8 +162,20 @@ shinyServer(
           axis.text.y = element_blank(),
           axis.ticks = element_blank())
     })
-  })
+ 
+output$colPlot <- renderPlot({
+  p <- ggplot(test, aes(ycoor,zcoor))
+  p + coord_fixed(ratio = 1) + geom_polygon(aes(xx, yy), fill=hsv(1,stim[values$round,1],1)) + scale_x_continuous(name="", breaks=NULL) +
+    scale_y_continuous(name="", breaks=NULL) + theme(
+      axis.text.x = element_blank(),
+      axis.text.y = element_blank(),
+      axis.ticks = element_blank(),
+      panel.background = element_rect("white"))
+    })
+})
+
 
 
 # This renders the table of choices made by a participant that is shown
 # to them on the final screen
+

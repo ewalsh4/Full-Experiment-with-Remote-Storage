@@ -36,7 +36,7 @@ shinyUI(fluidPage(
   hidden(
     div( id = "instructions",
          h3("Please read the instructions presented below"),
-         p("This panel will show the reference bar, the reference circle and the instructions for the respondents"),
+         p("This panel will show the reference plots and the instructions for the respondents"),
          actionButton("confirm", label = "Ok, I got it... let's start")
     )
   ),
@@ -60,27 +60,34 @@ shinyUI(fluidPage(
         column(5,
                wellPanel(
                  sliderInput("slide", 
-                             "Use the slider to set the number of dots in the plot to the length of the bar.", 
+                             "Use the slider to set the number of dots in the plot to the color of the circle below.", 
                              ticks = F,
                              min = 1, 
                              max = 500, 
                              value = 0)
                ),
-               actionButton("submit","submit")
+               actionButton("submit","submit"),
+               br(),
+               plotOutput("colPlot")
+               
         ),
+        
         
         
         # Show a plot of the generated distribution
         column(7,
-               tags$h5("If the bar below is LONGER than the reference bar, include MORE dots in the circle.
+               tags$h5("Match the density of the plot below to the color of the red circle.
                        "),
-               tags$h5("If the bar below is SHORTER than the reference bar, include FEWER dots in the circle.
+               tags$h5("If the red circle is DARKER than the reference image, include MORE dots in the circle below.  If the red circle is LIGHTER than the reference image, include FEWER dots in the circle below.
                        "),
-               imageOutput("bars", width="100%", height="100%"),
+               
+               tags$h5("If the red circle is DARKER than the reference image, include MORE dots in the circle below.  If the red circle is LIGHTER than the reference image, include FEWER dots in the circle below.
+                       "),
+               ##imageOutput("bars", width="100%", height="100%"),
                br(),
                
                
-               tags$h5("Set the number of dots in the circle:
+               tags$h5("Set the density of the dots in the circle:
                        "),
                plotOutput("distPlot") 
                

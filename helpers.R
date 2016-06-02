@@ -1,6 +1,7 @@
 # which fields get saved
 fieldsAll <- c("user", "guess","slide")
 token <- readRDS("droptoken.rds")
+stim <- as.data.frame(seq(0.1, 1, length.out =10))
 
 # this sets the folder where all of the reponses get saved
 responsesDir <- file.path("responses")
