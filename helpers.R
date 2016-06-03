@@ -1,5 +1,5 @@
 # which fields get saved
-fieldsAll <- c("user", "guess","slide")
+fieldsAll <- c("user", "guess","slide", "slide2", "stim")
 token <- readRDS("droptoken.rds")
 stim <- as.data.frame(seq(0.1, 1, length.out =10))
 
@@ -14,6 +14,7 @@ n_rounds <- 1
 
 ## setting the max number of rounds 
 n_guesses <- 10
+n_guesses2 <- 20
 
 # add an asterisk to an input label
 labelMandatory <- function(label) {

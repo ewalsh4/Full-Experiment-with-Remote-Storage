@@ -23,7 +23,9 @@ ycoor <- y * cos(theta)
 zcoor <- z * sin(theta)
 colorR   <- seq(0, 1, length.out = 500) ###new shit
 
-stim <- as.data.frame(seq(0.1, 1, length.out =10))
+stim1 <- data.frame(stim=seq(0.02, 1, length.out =10))
+stim2 <- data.frame(stim=seq(10,500, length.out = 10))
+stim <- rbind(stim1,stim2)
 
 ##origin, diameter and points
 cir <- circleFun(c(0,0),2,npoints = 500)
@@ -87,12 +89,12 @@ shinyServer(
     output$num <- renderText(paste("Question", values$round))
     
     
-    output$bars <- renderImage({
-      
-      filename <- normalizePath(file.path('./www',                    paste('blue_bar_', values$round, '.png', sep='')))   
-      list(src = filename)
-    }, deleteFile = FALSE)
-    
+    # output$bars <- renderImage({
+    #   
+    #   filename <- normalizePath(file.path('./www',                    paste('blue_bar_', values$round, '.png', sep='')))   
+    #   list(src = filename)
+    # }, deleteFile = FALSE)
+    # 
     ##########################################################
     ########## PART IIIa: MAIN HANDLER #######################
     ##########################################################
@@ -129,14 +131,81 @@ shinyServer(
       if(values$round > n_guesses){
         
         
-        saveData(values$df)
+        ##saveData(values$df)
         
         # Say good-bye
         hide(id = "form")
-        show(id = "end")
+        show(id = "instructions2")
       }
    }
     })
+    
+    observeEvent(input$confirm2, {
+      hide("instructions2")
+      show("ends")
+    })
+    
+    
+    
+    ########################################################all crap
+    
+    
+    observeEvent(input$submit2, {
+      if(input$slide2==.5){
+        shinyjs::show("slide_error")
+      }
+      else {
+        shinyjs::hide("slide_error")
+        # Increment the round by one
+        isolate({
+          values$round <- values$round +1
+        })
+        
+        
+        # Call function formData() (see below) to record submitted response
+        newLine <- isolate(formData())
+        
+        # Write newLine into data frame df
+        isolate({
+          values$df <- rbind(values$df, newLine)
+        })
+        
+        updateSliderInput(session, "slide2", value = .5,
+                          min =.002, max = 1)
+        
+        
+        # Has the user reached the end of the experiment?
+        # If so then...
+        if(values$round > n_guesses2){
+          
+          
+          saveData(values$df)
+          
+          # Say good-bye
+          hide(id = "ends")
+          show(id = "end")
+        }
+      }
+    })
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    ############################################################################
+    
     
     ## Utilities & functions
     
@@ -147,11 +216,12 @@ shinyServer(
     # Gather all the form inputs (and add timestamp)
     formData <- reactive({
       data <- sapply(fieldsAll, function(x) input[[x]])
-      data <- c(round = values$round-1, data, timestamp = humanTime())
+      data <- c(round = values$round-1, data, timestamp = humanTime(), stim=stim[values$round-1,1])
       data <- t(data)
       data
     })
     
+   
     # Here is the ggplot for the circle that shows up in the main experiment.  It sets ycoor and zcoor as the x and y axis of the plot that is to be rendered.  It then subsets the data by the value of x.  All the x values less than the slider input are included in the plot.
     
     output$distPlot <- renderPlot({
@@ -172,7 +242,32 @@ output$colPlot <- renderPlot({
       axis.ticks = element_blank(),
       panel.background = element_rect("white"))
     })
+
+
+
+########################### round 2 of the stimuli
+
+output$distPlot2 <- renderPlot({
+  p <- ggplot(test, aes(ycoor,zcoor))
+  p + geom_point(data=subset(test, x < stim[values$round,1]), size=4) + coord_fixed(ratio = 1) + geom_path(aes(xx, yy)) + scale_x_continuous(name="", breaks=NULL) +
+    scale_y_continuous(name="", breaks=NULL) + theme(
+      axis.text.x = element_blank(),
+      axis.text.y = element_blank(),
+      axis.ticks = element_blank())
 })
+
+output$colPlot2 <- renderPlot({
+  p <- ggplot(test, aes(ycoor,zcoor))
+  p + coord_fixed(ratio = 1) + geom_polygon(aes(xx, yy), fill=hsv(1,input$slide2,1)) + scale_x_continuous(name="", breaks=NULL) +
+    scale_y_continuous(name="", breaks=NULL) + theme(
+      axis.text.x = element_blank(),
+      axis.text.y = element_blank(),
+      axis.ticks = element_blank(),
+      panel.background = element_rect("white"))
+      })
+  })
+
+
 
 
 

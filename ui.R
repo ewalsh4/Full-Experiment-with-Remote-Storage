@@ -20,7 +20,7 @@ shinyUI(fluidPage(
         hidden(
           div(
             id = "login_error",
-            span("Your user name is invalid. Please check for typos and try again.", style = "color:red")
+            span("Your user name or password is invalid. Please check for typos and try again.", style = "color:red")
           )
         )
       ),
@@ -55,7 +55,6 @@ shinyUI(fluidPage(
     div(
       id = "form",
       titlePanel(textOutput("num")),
-      
       fluidRow(
         column(5,
                wellPanel(
@@ -71,17 +70,13 @@ shinyUI(fluidPage(
                plotOutput("colPlot")
                
         ),
-        
-        
-        
-        # Show a plot of the generated distribution
+    # Show a plot of the generated distribution
         column(7,
                tags$h5("Match the density of the plot below to the color of the red circle.
                        "),
-               tags$h5("If the red circle is DARKER than the reference image, include MORE dots in the circle below.  If the red circle is LIGHTER than the reference image, include FEWER dots in the circle below.
-                       "),
+               tags$h5("If the red circle is DARKER than the reference image, include MORE dots in the circle below."),
                
-               tags$h5("If the red circle is DARKER than the reference image, include MORE dots in the circle below.  If the red circle is LIGHTER than the reference image, include FEWER dots in the circle below.
+               tags$h5("If the red circle is LIGHTER than the reference image, include FEWER dots in the circle below.
                        "),
                ##imageOutput("bars", width="100%", height="100%"),
                br(),
@@ -96,6 +91,63 @@ shinyUI(fluidPage(
                )
                )
   )),
+  
+  ############################# Second Stage of the calibration exercise
+  
+  # hidden(
+  #   div(
+  #     id = "form2",
+  #     titlePanel(textOutput("num")),
+  #     
+  #     fluidRow(
+  #       column(5,
+  #              wellPanel(
+  #                sliderInput("slide", 
+  #                            "Use the slider to set the number of dots in the plot to the color of the circle below.", 
+  #                            ticks = F,
+  #                            min = 1, 
+  #                            max = 500, 
+  #                            value = 0)
+  #              ),
+  #              actionButton("submit","submit"),
+  #              br(),
+  #              plotOutput("colPlot")
+  #              
+  #       ),
+  #       
+  #       
+  #       
+  #       # Show a plot of the generated distribution
+  #       column(7,
+  #              tags$h5("Match the density of the plot below to the color of the red circle.
+  #                      "),
+  #              tags$h5("If the red circle is DARKER than the reference image, include MORE dots in the circle below."),
+  #              
+  #              tags$h5("If the red circle is LIGHTER than the reference image, include FEWER dots in the circle below.
+  #                      "),
+  #              ##imageOutput("bars", width="100%", height="100%"),
+  #              br(),
+  #              
+  #              
+  #              tags$h5("Set the density of the dots in the circle:
+  #                      "),
+  #              plotOutput("distPlot") 
+  #              
+  #              
+  #              
+  #              )
+  #       )
+  #   )),
+  # 
+  
+  
+  
+  
+  
+  
+  ####################
+  
+  
   
   hidden(
     div(
@@ -115,8 +167,61 @@ shinyUI(fluidPage(
           br(),
           h3("kj5jv39c", align= "center")
         )
-      )
+      ))),
+    
+  
+  hidden(
+    div( id = "instructions2",
+         h3("Now you will be asked to do the opposite"),
+         p("In this experiment you will have to guess the in wich direction
+a coin that is tossed repeatedly is biased. You will observe whether
+the coin landed heads or tails over several tosses.... Bla bla"),
+         actionButton("confirm2", label = "Ok, I got it...")
+    )
+  ),
+  
+  hidden(
+    div( id = "ends",
+      
+             titlePanel("Fuckers"),
+
+             fluidRow(
+               column(5,
+                      wellPanel(
+                        sliderInput("slide2",
+                                    "Use the slider to set the number of dots in the plot to the color of the circle below.",
+                                    ticks = F,
+                                    min = 0,
+                                    max = 1,
+                                    value = .5,
+                                    step = .002)
+                      ),
+                      actionButton("submit2","submit"),
+                      br(),
+                      plotOutput("colPlot2")
+
+               ),
+
+
+
+               # Show a plot of the generated distribution
+               column(7,
+                      tags$h5("Match the density of the plot below to the color of the red circle.
+                              "),
+                      tags$h5("If the red circle is DARKER than the reference image, include MORE dots in the circle below."),
+
+                      tags$h5("If the red circle is LIGHTER than the reference image, include FEWER dots in the circle below.
+                              "),
+                      ##imageOutput("bars", width="100%", height="100%"),
+                      br(),
+
+
+                      tags$h5("Set the density of the dots in the circle:
+                              "),
+                      plotOutput("distPlot2")
+                      )
+               )
+           ))
     )
   )
-  )
-)
+
