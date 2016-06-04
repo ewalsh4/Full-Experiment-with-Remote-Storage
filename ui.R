@@ -36,7 +36,7 @@ shinyUI(fluidPage(
   hidden(
     div( id = "instructions",
          h3("Please read the instructions presented below"),
-         p("This panel will show the reference plots and the instructions for the respondents"),
+         p("This panel will show a sample of the color plot and a sample of the density plot. Respondents will be instructed to match the density plot to the color plot for the next 10 questions."),
          actionButton("confirm", label = "Ok, I got it... let's start")
     )
   ),
@@ -92,60 +92,7 @@ shinyUI(fluidPage(
                )
   )),
   
-  ############################# Second Stage of the calibration exercise
-  
-  # hidden(
-  #   div(
-  #     id = "form2",
-  #     titlePanel(textOutput("num")),
-  #     
-  #     fluidRow(
-  #       column(5,
-  #              wellPanel(
-  #                sliderInput("slide", 
-  #                            "Use the slider to set the number of dots in the plot to the color of the circle below.", 
-  #                            ticks = F,
-  #                            min = 1, 
-  #                            max = 500, 
-  #                            value = 0)
-  #              ),
-  #              actionButton("submit","submit"),
-  #              br(),
-  #              plotOutput("colPlot")
-  #              
-  #       ),
-  #       
-  #       
-  #       
-  #       # Show a plot of the generated distribution
-  #       column(7,
-  #              tags$h5("Match the density of the plot below to the color of the red circle.
-  #                      "),
-  #              tags$h5("If the red circle is DARKER than the reference image, include MORE dots in the circle below."),
-  #              
-  #              tags$h5("If the red circle is LIGHTER than the reference image, include FEWER dots in the circle below.
-  #                      "),
-  #              ##imageOutput("bars", width="100%", height="100%"),
-  #              br(),
-  #              
-  #              
-  #              tags$h5("Set the density of the dots in the circle:
-  #                      "),
-  #              plotOutput("distPlot") 
-  #              
-  #              
-  #              
-  #              )
-  #       )
-  #   )),
-  # 
-  
-  
-  
-  
-  
-  
-  ####################
+
   
   
   
@@ -173,23 +120,19 @@ shinyUI(fluidPage(
   hidden(
     div( id = "instructions2",
          h3("Now you will be asked to do the opposite"),
-         p("In this experiment you will have to guess the in wich direction
-a coin that is tossed repeatedly is biased. You will observe whether
-the coin landed heads or tails over several tosses.... Bla bla"),
+         p("This panel will show a sample of the color plot and a sample of the density plot. Respondents will be instructed to match the color plot to the density plot for the next 10 questions."),
          actionButton("confirm2", label = "Ok, I got it...")
     )
   ),
   
   hidden(
     div( id = "ends",
-      
-             titlePanel("Fuckers"),
-
+             titlePanel(textOutput("num2")), 
              fluidRow(
                column(5,
                       wellPanel(
                         sliderInput("slide2",
-                                    "Use the slider to set the number of dots in the plot to the color of the circle below.",
+                                    "Use the slider to set the color of the red plot to the density of the dot plot.",
                                     ticks = F,
                                     min = 0,
                                     max = 1,
@@ -206,17 +149,17 @@ the coin landed heads or tails over several tosses.... Bla bla"),
 
                # Show a plot of the generated distribution
                column(7,
-                      tags$h5("Match the density of the plot below to the color of the red circle.
+                      tags$h5("Match the color of the red circle to the density of the dot plot.
                               "),
-                      tags$h5("If the red circle is DARKER than the reference image, include MORE dots in the circle below."),
+                      tags$h5("If the dots are MORE dense than the reference image, make the red circle DARKER."),
 
-                      tags$h5("If the red circle is LIGHTER than the reference image, include FEWER dots in the circle below.
+                      tags$h5("If the dots are LESS dense than the reference image, make the red circle LIGHTER.
                               "),
                       ##imageOutput("bars", width="100%", height="100%"),
                       br(),
 
 
-                      tags$h5("Set the density of the dots in the circle:
+                      tags$h5("Set the color of the red circle:
                               "),
                       plotOutput("distPlot2")
                       )

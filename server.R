@@ -149,6 +149,7 @@ shinyServer(
     
     ########################################################all crap
     
+    output$num2 <- renderText(paste("Question", values$round))
     
     observeEvent(input$submit2, {
       if(input$slide2==.5){
@@ -213,7 +214,10 @@ shinyServer(
     # When it is called, it creates a vector of data.
     # This will be a row added to values$df - one for each round.
     #
+    # notice that you also need to subtract 1 for the stimulus value as well 
+    # otherwise they will be off by 1 row
     # Gather all the form inputs (and add timestamp)
+    #
     formData <- reactive({
       data <- sapply(fieldsAll, function(x) input[[x]])
       data <- c(round = values$round-1, data, timestamp = humanTime(), stim=stim[values$round-1,1])
