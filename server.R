@@ -8,7 +8,7 @@ source('helpers.R')
 ###############################################################
 ##other stuff you may be able to put into the 
 
-circleFun <- function(center = c(0,0),diameter = 1, npoints = 100){
+circleFun <- function(center = c(0,0),diameter = .5, npoints = 100){
   r = diameter / 2
   tt <- seq(0,2*pi,length.out = npoints)
   xx <- center[1] + r * cos(tt)
@@ -23,9 +23,17 @@ ycoor <- y * cos(theta)
 zcoor <- z * sin(theta)
 colorR   <- seq(0, 1, length.out = 500) ###new shit
 
-stim1 <- data.frame(stim=seq(0.02, 1, length.out =10))
-stim2 <- data.frame(stim=seq(10,500, length.out = 10))
+stim1 <- data.frame(stim=seq(0.1, 1, length.out =10))
+##adding the radomization
+stim1 <- data.frame(stim=stim1[sample(nrow(stim1)),])
+##second round of stimuli
+stim2 <- data.frame(stim=seq(50,500, length.out = 10))
+##adding the randomization
+stim2 <- data.frame(stim=stim2[sample(nrow(stim2)),])
+
+
 stim <- rbind(stim1,stim2)
+
 
 ##origin, diameter and points
 cir <- circleFun(c(0,0),2,npoints = 500)
@@ -87,7 +95,7 @@ shinyServer(
     values$df <- NULL
     
     output$num <- renderText(paste("Question", values$round))
-    
+    output$colorNum <- renderText(paste("Color Number", values$round))
     
     # output$bars <- renderImage({
     #   
@@ -103,7 +111,7 @@ shinyServer(
     # Observe the submit button, if clicked... FIRE
     
     observeEvent(input$submit, {
-    if(input$slide==1){
+    if(input$slide==0){
       shinyjs::show("slide_error")
     }
    else {
@@ -150,9 +158,10 @@ shinyServer(
     ########################################################all crap
     
     output$num2 <- renderText(paste("Question", values$round))
+    output$colorNum2 <- renderText(paste("Density Plot", values$round))
     
     observeEvent(input$submit2, {
-      if(input$slide2==.5){
+      if(input$slide2==.1){
         shinyjs::show("slide_error")
       }
       else {
@@ -171,8 +180,8 @@ shinyServer(
           values$df <- rbind(values$df, newLine)
         })
         
-        updateSliderInput(session, "slide2", value = .5,
-                          min =.002, max = 1)
+        updateSliderInput(session, "slide2", value = .1,
+                          min =.1, max = 1)
         
         
         # Has the user reached the end of the experiment?
@@ -269,7 +278,48 @@ output$colPlot2 <- renderPlot({
       axis.ticks = element_blank(),
       panel.background = element_rect("white"))
       })
-  })
+  
+
+
+output$refCOL <- renderPlot({
+  p <- ggplot(test, aes(ycoor,zcoor))
+  p + coord_fixed(ratio = 1) + geom_polygon(aes(xx, yy), fill=hsv(1,.55,1)) + scale_x_continuous(name="", breaks=NULL) +
+    scale_y_continuous(name="", breaks=NULL) + theme(
+      axis.text.x = element_blank(),
+      axis.text.y = element_blank(),
+      axis.ticks = element_blank(),
+      panel.background = element_rect("white"))
+})
+
+output$refDist <- renderPlot({
+  p <- ggplot(test, aes(ycoor,zcoor))
+  p + geom_point(data=subset(test, x < 250), size=4) + coord_fixed(ratio = 1) + geom_path(aes(xx, yy)) + scale_x_continuous(name="", breaks=NULL) +
+    scale_y_continuous(name="", breaks=NULL) + theme(
+      axis.text.x = element_blank(),
+      axis.text.y = element_blank(),
+      axis.ticks = element_blank())
+})
+
+
+output$refCOL2 <- renderPlot({
+  p <- ggplot(test, aes(ycoor,zcoor))
+  p + coord_fixed(ratio = 1) + geom_polygon(aes(xx, yy), fill=hsv(1,.55,1)) + scale_x_continuous(name="", breaks=NULL) +
+    scale_y_continuous(name="", breaks=NULL) + theme(
+      axis.text.x = element_blank(),
+      axis.text.y = element_blank(),
+      axis.ticks = element_blank(),
+      panel.background = element_rect("white"))
+})
+
+output$refDist2 <- renderPlot({
+  p <- ggplot(test, aes(ycoor,zcoor))
+  p + geom_point(data=subset(test, x < 250), size=4) + coord_fixed(ratio = 1) + geom_path(aes(xx, yy)) + scale_x_continuous(name="", breaks=NULL) +
+    scale_y_continuous(name="", breaks=NULL) + theme(
+      axis.text.x = element_blank(),
+      axis.text.y = element_blank(),
+      axis.ticks = element_blank())
+})
+})
 
 
 
